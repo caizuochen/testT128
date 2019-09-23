@@ -7,6 +7,15 @@ public class ClassInfo {
 	private String name;
 	private String explain;
 	private List<Student> students;
+
+	/***
+	 * 1111111111111111111111111
+	 * @return
+	 */
+
+
+
+
 	public int getId() {
 		return id;
 	}
