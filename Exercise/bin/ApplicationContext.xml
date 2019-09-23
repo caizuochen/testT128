@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:p="http://www.springframework.org/schema/p"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+     	<!--   扫描某个包 -->
+        <context:component-scan base-package="*" /> 
+        	<!-- 告诉aop 我支持注解模式 -->
+        <aop:aspectj-autoproxy />
+        
+        <!-- 引入其他配置文件 -->
+        <context:property-placeholder location="classpath:database.properties" />
+		<!-- 连接数据库 -->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName" value="${driver}" />
+			<property name="url" value="${url}" />
+			<property name="username" value="${username}" />
+			<property name="password" value="${password}" />
+        </bean>
+        
+        <!-- 配置SQLSession -->
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        	<property name="dataSource" ref="dataSource" />
+        	<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+       		<property name="mapperLocations">
+       			<list>
+       				<value>classpath:mapper/*.xml</value>
+       			</list>
+       		</property>
+        </bean>
+        
+       <!--  创建MapperFactoryBean 工厂 的目的是让spring给我们创建 我们所有的mapper的实现了类 -->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<property name="basePackage" value="mapper" />
+        	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        </bean>
+</beans>
