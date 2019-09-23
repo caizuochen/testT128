@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.appsys.mapper.ClassInfoCURDMapper">
+	<!-- 查询所有班级数据 -->
+	<select id="queryClassInfo" resultType="ClassInfo" parameterType="String">
+		SELECT * FROM classinfo
+		<if test="classInfoName != null">
+		WHERE className LIKE CONCAT('%',#{classInfoName},'%')
+		</if>
+	</select>
+	<!-- 根据班级id查询一条班级信息 -->
+	<select id="queryClassInfoByClassId" resultType="ClassInfo">
+		SELECT * FROM classinfo
+		<if test="classId != null">
+		WHERE id=#{classId}
+		</if>
+	</select>
+	<!--  根据班级名称查询是否有该名称的班级 -->
+	<select id="queryClassInfoByClassName" resultType="Integer" parameterType="String">
+		SELECT COUNT(1) FROM classinfo WHERE className=#{className}
+	</select>
+	<!--  查看一个班级id下是否存在学生 -->
+	<select id="queryStudentByClassid" resultType="Integer">
+		SELECT COUNT(1) FROM student WHERE classId=#{classId}
+	</select>
+	<!-- 根据班级id来修改班级的名称 -->
+	<update id="updateClassInfo" parameterType="ClassInfo">
+		UPDATE classinfo SET className =#{className} WHERE id = #{id}
+	</update>
+	<!-- 添加一条班级数据 -->
+	<insert id="addClassInfo">
+		INSERT INTO classinfo VALUE(NULL,#{classInfoName})
+	</insert>
+	<!-- 删除一条班级数据 -->
+	<delete id="deleteClassInfo">
+		DELETE FROM classinfo WHERE id =#{id}
+	</delete>
+</mapper>

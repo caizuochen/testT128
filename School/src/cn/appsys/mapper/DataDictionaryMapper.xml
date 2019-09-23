@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.appsys.mapper.DataDictionaryMapper">
+	<!-- 根据数据字典的编码来查询符合该编码的所有数据 -->
+	<select id="queryData" resultType="DataDictionary">
+		SELECT * FROM data_dictionary WHERE 1=1
+		<if test="typeCode!=null and typeCode!=''">
+			and typeCode LIKE CONCAT('%',#{typeCode},'%')
+		</if>
+		<if test="typeName!=null and typeName!=''">
+			and typeName LIKE CONCAT('%',#{typeName},'%')
+		</if>
+	</select>
+	<!-- 根据id查询一条数据字典 -->
+	<select id="queryDataById" parameterType="Integer" resultType="DataDictionary">
+		SELECT * FROM data_dictionary WHERE id=#{id}
+	</select>
+	<!-- 删除一条数据字典数据 -->
+	<delete id="deleteData" parameterType="Integer">
+		DELETE FROM data_dictionary WHERE id =#{id}
+	</delete>
+	<!-- 根据班级id来修改数据字典的名称 -->
+	<update id="updateData" parameterType="DataDictionary">
+		UPDATE data_dictionary SET typeCode =#{typeCode},typeName=#{typeName},valueId=#{valueId},valueName=#{valueName},state=#{state} WHERE id = #{id}
+	</update>
+	<!-- 添加一条数据字典数据 -->
+	<insert id="addData">
+		INSERT INTO data_dictionary VALUE(NULL,#{typeCode},#{typeName},#{valueId},#{valueName},#{state})
+	</insert>
+</mapper>
