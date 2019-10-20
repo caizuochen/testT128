@@ -24,6 +24,7 @@ public class DataUtils {
 	 */
 	public static List<DataDictionary> getDataDictionary(
 			ServletContext servletContext, String typeCode) {
+			System.out.println("sss");
 		Map map = (Map) servletContext.getAttribute("dataMap");
 		List<DataDictionary> list = (List<DataDictionary>) map.get(typeCode);
 		return list;
